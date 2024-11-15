@@ -39,6 +39,20 @@ expressions.filters.bookmarkLink = function(input, identifier) {
         + '</w:r></w:hyperlink>';
 }
 
+
+
+//nd you would like to show the price with two digits of precision, you can write in your template:{price | toFixed:2}
+
+expressions.filters.toFixed = function (input, precision) {
+    // In our example precision is the integer 2
+    // This condition should be used to make sure that if your input is
+    // undefined, your output will be undefined as well and will not
+    // throw an error
+    if (!input) return input;
+    return input.toFixed(precision);
+};
+
+
 // Creates a clickable dynamic field referencing a text block bookmark:
 // {@identifier | bookmarkRef | p}
 // Identifiers are sanitized as follow:
