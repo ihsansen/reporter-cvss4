@@ -308,7 +308,6 @@ expressions.filters.select = function(input, attr) {
 
 // Sorts the input array according an optional given attribute, dotted notation is supported: {#findings | sort 'cvss.environmentalSeverity'}{name}{/findings | sort 'cvss.environmentalSeverity'}
 expressions.filters.sort = function(input, key = null,order) {
-console.log("Betül",input);   
  if (key === null) {
         return input.sort();
     }
