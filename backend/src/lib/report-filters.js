@@ -41,6 +41,39 @@ expressions.filters.bookmarkLink = function(input, identifier) {
 
 
 
+// Count vulnerability by severity and type
+// Example: {findings | countbytype: 'Critical' : 'Black'}
+expressions.filters.countbytype = function(input, severity, type) {
+    if(!input) return input;
+    var count = 0;
+
+    for(var i = 0; i < input.length; i++){
+	if(input[i].cvss.baseSeverity === severity){
+			if(input[i].test_type === type){
+           			 count += 1;
+		}
+	}
+    }
+
+    return count;
+}
+
+// Count vulnerability by type
+// Example: {findings | typecount: 'Black'}
+expressions.filters.typecount = function(input, type) {
+    if(!input) return input;
+    var count = 0;
+
+    for(var i = 0; i < input.length; i++){
+		if(input[i].test_type === type){
+            		count += 1;
+        	}
+    }
+
+    return count;
+}
+
+
 //nd you would like to show the price with two digits of precision, you can write in your template:{price | toFixed:2}
 
 expressions.filters.toFixed = function (input, precision) {
@@ -274,13 +307,14 @@ expressions.filters.select = function(input, attr) {
 }
 
 // Sorts the input array according an optional given attribute, dotted notation is supported: {#findings | sort 'cvss.environmentalSeverity'}{name}{/findings | sort 'cvss.environmentalSeverity'}
-expressions.filters.sort = function(input, key = null) {
-    if (key === null) {
+expressions.filters.sort = function(input, key = null,order) {
+console.log("Betül",input);   
+ if (key === null) {
         return input.sort();
     }
     else {
         return input.sort(function(a, b) {
-            return _.get(a, key) < _.get(b, key);
+            return (_.get(a, key) - _.get(b, key)) * order;
         });
     }
 }
