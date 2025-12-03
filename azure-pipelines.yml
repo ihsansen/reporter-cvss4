@@ -2,13 +2,14 @@ trigger:
 - cvss4
 
 pool:
-  name: Default  # self-hosted agent pool
-  demands:
-    - Agent.Name -equals report
+  name: Default  # Self-hosted agent pool
+  # Eğer agent adını kesin olarak belirtmek istersen:
+  # demands:
+  #   - Agent.Name -equals ubuntu-build
 
 steps:
 - script: |
-    echo "Docker komutları:"
+    echo "Docker ve Compose kontrol ediliyor..."
     docker --version
     docker compose version
   displayName: "Check Docker"
@@ -16,12 +17,12 @@ steps:
 - script: |
     cd $(Build.SourcesDirectory)
 
-    echo "Containerlari kapatiliyor..."
-    docker compose down || true
+    echo "Eski container'lar kapatılıyor..."
+    docker compose down --volumes || true
 
-    echo "Yeni build yapiliyor..."
+    echo "Yeni build yapılıyor..."
     docker compose build
 
-    echo "Uygulama kaldiriliyor..."
+    echo "Uygulama başlatılıyor..."
     docker compose up -d
   displayName: "Build & Deploy on Ubuntu Server"
