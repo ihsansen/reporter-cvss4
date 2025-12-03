@@ -18,7 +18,9 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImage: ubuntu-latest
+      name: Default           # ← self-hosted agent pool'un
+      # demands:
+      #   - Agent.Name -equals <senin-agent-adin>   # (opsiyonel)
     steps:
     - task: Docker@2
       displayName: Build an image
