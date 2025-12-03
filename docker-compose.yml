@@ -4,7 +4,7 @@ services:
     image: mongo:4.2.15
     container_name: mongo-pwndoc
     volumes:
-      - mongo-data:/data/db        # <- artık repo içi değil, Docker volume
+      - mongo-data:/data/db
     restart: always
     ports:
       - 127.0.0.1:27017:27017
@@ -40,7 +40,6 @@ services:
     networks:
       - backend
 
-# Docker volume kullanımı
 volumes:
   mongo-data:
 
