@@ -4,7 +4,7 @@ trigger:
 pool:
   name: Default  # self-hosted agent pool
   demands:
-    - Agent.Name -equals ubuntu-build
+    - Agent.Name -equals report
 
 steps:
 - script: |
