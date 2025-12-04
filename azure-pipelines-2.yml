@@ -1,29 +1,28 @@
-# Docker
-# Build a Docker image
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
-
 trigger:
 - cvss4
 
-resources:
-- repo: self
+pool:
+  name: Default  # Self-hosted agent pool
+  # Eğer agent adını kesin olarak belirtmek istersen:
+  # demands:
+  #   - Agent.Name -equals ubuntu-build
 
-variables:
-  tag: '$(Build.BuildId)'
+steps:
+- script: |
+    echo "Docker ve Compose kontrol ediliyor..."
+    docker --version
+    docker compose version
+  displayName: "Check Docker"
 
-stages:
-- stage: Build
-  displayName: Build image
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/backend/Dockerfile'
-        tags: |
-          $(tag)
+- script: |
+    cd $(Build.SourcesDirectory)
+
+    echo "Eski container'lar kapatılıyor..."
+    docker compose down --volumes || true
+
+    echo "Yeni build yapılıyor..."
+    docker compose build
+
+    echo "Uygulama başlatılıyor..."
+    docker compose up -d
+  displayName: "Build & Deploy on Ubuntu Server"
