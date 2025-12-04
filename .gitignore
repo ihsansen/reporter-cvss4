@@ -26,3 +26,4 @@ app-settings.json
 
 # Version managers
 .tool-versions
+backend/mongo-data/
